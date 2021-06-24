@@ -22,7 +22,10 @@ public class Main
                 Element linkElement = mainArticleTitle.parent();
                 String link = linkElement.attr("href");
                 Document news=Jsoup.connect(link).get();
-                System.out.println(link);
+                String text=news.getElementsByClass("item-main-content").text();
+                System.out.println(text);
+                System.out.println("----------------------");
+
             }
 
 
