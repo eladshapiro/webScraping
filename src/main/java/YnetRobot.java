@@ -8,38 +8,50 @@ import java.util.Map;
 
 public class YnetRobot extends BaseRobot
 {
-    private Map<String, Integer> map = new HashMap<>();
-    private  ArrayList<String> sitesUrl;
+    private ArrayList<String> sitesUrl;
+    private Document site;
+    private Map<String, Integer> map;
 
     public YnetRobot() throws IOException
     {
         super("https://www.ynet.co.il/home/0,7340,L-8,00.html");
-        String url;
+        site = Jsoup.connect(super.getRootWebsiteUrl()).get();
         sitesUrl = new ArrayList<>();
-        Document ynet = Jsoup.connect(getRootWebsiteUrl()).get();
-        //teasers section
-        for (Element slotTitle : ynet.getElementsByClass("TopStory1280Componenta basic")) {
-            Element element = slotTitle.getElementsByClass("slotTitle").get(0);
-            url = element.child(0).attributes().get("href");
-            sitesUrl.add(url);
+        map = new HashMap<>();
+        String words;
+        String[] wordsSplit;
+
+        sitesUrl.add(site.getElementsByClass("slotTitle").get(0).child(0).attributes().get("href"));
+        Element teasers = site.getElementsByClass("YnetMultiStripComponenta oneRow multiRows").get(0);
+        for (Element mediaItems : teasers.getElementsByClass("mediaItems")) {
+            sitesUrl.add(mediaItems.child(0).child(0).attributes().get("href"));
         }
-        for (Element teasers : ynet.getElementsByClass("YnetMultiStripComponenta oneRow multiRows")) {
-            for (Element textDiv : teasers.getElementsByClass("textDiv")) {
-                url = textDiv.child(1).attributes().get("href");
-                sitesUrl.add(url);
+        Element news = site.getElementsByClass("MultiArticleRowsManualComponenta").get(0);
+        for (Element mediaItems : news.getElementsByClass("mediaItems")) {
+            sitesUrl.add(mediaItems.child(0).child(0).attributes().get("href"));
+        }
+        for (Element slotTitle_small : news.getElementsByClass("slotTitle small"))
+        {
+            sitesUrl.add(slotTitle_small.child(0).attributes().get("href"));
+        }
+
+        for (String url : sitesUrl) {
+            site = Jsoup.connect(url).get();
+            words = (site.getElementsByClass("mainTitle").text()) + " ";
+            words += (site.getElementsByClass("subTitle").text()) + " ";
+            words += (site.getElementsByClass("text_editor_paragraph rtl").text());
+            wordsSplit = words.split(" ");
+            for (String word : wordsSplit) {
+                if (map.containsKey(word)) {
+                    map.put(word, map.get(word) + 1);
+                } else {
+                    map.put(word, 1);
+                }
             }
         }
-        //news section
-        for (Element slotsContent : ynet.getElementsByClass("MultiArticleRowsManualComponenta").get(0).getElementsByClass("slotsContent")) {
-            for (Element slotTitle_medium : slotsContent.getElementsByClass("slotTitle medium")) {
-                url = slotTitle_medium.child(0).attributes().get("href");
-                sitesUrl.add(url);
-            }
-            for (Element slotTitle_small : slotsContent.getElementsByClass("slotTitle small")) {
-                url = slotTitle_small.child(0).attributes().get("href");
-                sitesUrl.add(url);
-            }
-        }
+        System.out.println(map);
+
+
     }
 
     @Override
