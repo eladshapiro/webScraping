@@ -12,5 +12,10 @@ public class Main
        /* WallaRobot wallaRobot = new WallaRobot("https://www.walla.co.il/");
         wallaRobot.getWordsStatistics();*/
         YnetRobot ynetRobot=new YnetRobot();
+        System.out.println();
+        MakoRobot  makoRobot=new MakoRobot();
+        System.out.println();
+        WallaRobot wallaRobot=new WallaRobot();
+
     }
 }
