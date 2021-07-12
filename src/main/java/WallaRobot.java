@@ -1,6 +1,8 @@
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,14 +34,33 @@ public class WallaRobot extends BaseRobot
             sitesUrl.add(smallTeasers.attributes().get("href"));
         }
 
-        for (String url : sitesUrl) {
+        for (String url : sitesUrl)
+        {
             site = Jsoup.connect(url).get();
             Element titleSection = site.getElementsByClass("item-main-content").get(0);
             words =titleSection.getElementsByTag("h1").get(0).text()+" ";
-            for (Element subTitle : site.getElementsByClass("css-onxvt4")) {
+            for (Element subTitle : site.getElementsByClass("css-onxvt4"))
+            {
                 words+=(subTitle.text()+" ");
             }
-            // צריכים למצוא גם את גוף הטקסט
+
+
+       /*     Document mainArticle=Jsoup.connect(url).get();                                    // גוף הטקסט
+            words+=mainArticle.getElementsByClass("item-main-content").text();
+
+            Elements elementsSubArticles = site.getElementsByClass("main-taste");
+            Element subArticle=elementsSubArticles.get(0);
+            Elements article=subArticle.getElementsByTag("article");
+
+            for (int i=0;i<article.size();i++)
+            {
+                Element mainArticleTitle = article.get(i);
+                Element linkElement = mainArticleTitle.parent();
+                String link = linkElement.attr("href");
+                Document news = Jsoup.connect(link).get();
+                words += news.getElementsByClass("item-main-content").text();
+            }*/
+
 
             wordsSplit = words.split(" ");
 
