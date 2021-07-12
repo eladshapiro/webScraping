@@ -44,6 +44,7 @@ public class Main {
     public static void levelOne(BaseRobot site){
     int score=0;
         System.out.println("Hint: The title of the longest article is: "+site.getLongestArticleTitle());
+        System.out.println();
         for (int i=0;i<5;i++) {
             System.out.println("Enter a word that you think appears on the site");
             String word=scanner.next();
@@ -52,6 +53,6 @@ public class Main {
             }
             else score+=site.getWordsStatistics().get(word);
         }
-        System.out.println(score);
+        System.out.println("you'r score is:"+score);
     }
 }
