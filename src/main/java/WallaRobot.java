@@ -8,90 +8,76 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class WallaRobot extends BaseRobot
-{
+public class WallaRobot extends BaseRobot {
     private ArrayList<String> sitesUrl;
     private Document site;
     private Map<String, Integer> map;
+    private ArrayList<Article> text;
 
-    public WallaRobot() throws IOException
-    {
+    public WallaRobot() throws IOException {
         super("https://www.walla.co.il/");
-        site = Jsoup.connect(super.getRootWebsiteUrl()).get();
-        sitesUrl = new ArrayList<>();
-        map = new HashMap<>();
-        String words;
-        String[] wordsSplit;
-
-        for (Element teasers : site.getElementsByClass("with-roof "))
-        {
+        this.site = Jsoup.connect(super.getRootWebsiteUrl()).get();
+        this.sitesUrl = new ArrayList<>();
+        this.map = new HashMap<>();
+        this.text=new ArrayList<>();
+        for (Element teasers : site.getElementsByClass("with-roof ")) {
             sitesUrl.add(teasers.child(0).attributes().get("href"));
         }
 
         Element secondPart = site.getElementsByClass("css-1ugpt00 css-a9zu5q css-rrcue5 ").get(0);
-        for (Element smallTeasers : secondPart.getElementsByTag("a"))
-        {
+        for (Element smallTeasers : secondPart.getElementsByTag("a")) {
             sitesUrl.add(smallTeasers.attributes().get("href"));
         }
-
-        for (String url : sitesUrl)
-        {
+        for (String url : sitesUrl) {
+            Article article = new Article("","","");
             site = Jsoup.connect(url).get();
             Element titleSection = site.getElementsByClass("item-main-content").get(0);
-            words =titleSection.getElementsByTag("h1").get(0).text()+" ";
-            for (Element subTitle : site.getElementsByClass("css-onxvt4"))
-            {
-                words+=(subTitle.text()+" ");
+            article.setMainTitle(titleSection.getElementsByTag("h1").get(0).text());
+            article.setSubTitle(titleSection.getElementsByTag("p").get(0).text());
+            for (Element subTitle : site.getElementsByClass("css-onxvt4")) {
+                article.setText(article.getText() + " " + subTitle.text());
             }
+            text.add(article);
+        }
+    }
 
 
-       /*     Document mainArticle=Jsoup.connect(url).get();                                    // גוף הטקסט
-            words+=mainArticle.getElementsByClass("item-main-content").text();
+    @Override
+    public Map<String, Integer> getWordsStatistics() {
+        for (Article article :this.text) {
+            String text = article.getText() + " " + article.getMainTitle() + " " + article.getSubTitle();
 
-            Elements elementsSubArticles = site.getElementsByClass("main-taste");
-            Element subArticle=elementsSubArticles.get(0);
-            Elements article=subArticle.getElementsByTag("article");
+            String[] wordsSplit = new String[text.length()];
+            wordsSplit = text.split(" ");
 
-            for (int i=0;i<article.size();i++)
-            {
-                Element mainArticleTitle = article.get(i);
-                Element linkElement = mainArticleTitle.parent();
-                String link = linkElement.attr("href");
-                Document news = Jsoup.connect(link).get();
-                words += news.getElementsByClass("item-main-content").text();
-            }*/
-
-
-            wordsSplit = words.split(" ");
-
-            for (String word : wordsSplit)
-            {
-                if (map.containsKey(word))
-                {
+            for (String word : wordsSplit) {
+                if (map.containsKey(word)) {
                     map.put(word, map.get(word) + 1);
-                } else
-                {
+                } else {
                     map.put(word, 1);
                 }
             }
         }
-        System.out.println(map);
-
+            return map;
 
     }
 
-    @Override
-    public Map<String, Integer> getWordsStatistics() {
-        return null;
+
+        @Override
+        public int countInArticlesTitles (String text){
+            return 0;
+        }
+
+        @Override
+        public String getLongestArticleTitle () {
+        String longestArticleTitle=new String();
+            for (int i=0;i<this.text.size()-1;i++){
+                if(text.get(i).getText().length()>text.get(i+1).getText().length()){
+                    longestArticleTitle=text.get(i).getMainTitle();
+                }
+                else longestArticleTitle=text.get(i+1).getMainTitle();
+            }
+            return longestArticleTitle;
+        }
     }
 
-    @Override
-    public int countInArticlesTitles(String text) {
-        return 0;
-    }
-
-    @Override
-    public String getLongestArticleTitle() {
-        return null;
-    }
-}
