@@ -17,34 +17,47 @@ public class Main {
         System.out.println("2.walla");
         System.out.println("3.ynet");
     int choice = scanner.nextInt();
-    switch (choice){
-        case 1:
-            MakoRobot makoRobot=new MakoRobot();
-            System.out.println(makoRobot.getLongestArticleTitle());
-            for(int i=0;i<5;i++){
-                String word=scanner.nextLine();
-                score+=makoRobot.getWordsStatistics().get(word);
-            }
-            break;
-        case 2:
-            WallaRobot wallaRobot=new WallaRobot();
-            System.out.println(wallaRobot.getLongestArticleTitle());
-            for (int i=0;i<5;i++) {
-                String word=scanner.next();
-                score+=wallaRobot.getWordsStatistics().get(word);
-            }
-            break;
-        case 3:
-            YnetRobot ynetRobot=new YnetRobot();
-            System.out.println(ynetRobot.getLongestArticleTitle());
-            for (int i=0;i<5;i++) {
-                String word=scanner.next();
-                score+=ynetRobot.getWordsStatistics().get(word);
-            }
-            break;
+        try {
+            switch (choice){
+                case 1:
+                    MakoRobot makoRobot=new MakoRobot();
+                    System.out.println(makoRobot.getLongestArticleTitle());
+                    for(int i=0;i<5;i++){
+                        String word=scanner.next();
+                        if(makoRobot.getWordsStatistics().get(word)==null){
+                            score+=0;
+                        }
+                        else score+=makoRobot.getWordsStatistics().get(word);
+                    }
+                    break;
+                case 2:
+                    WallaRobot wallaRobot=new WallaRobot();
+                    System.out.println(wallaRobot.getLongestArticleTitle());
+                    for (int i=0;i<5;i++) {
+                        String word=scanner.next();
+                        if(wallaRobot.getWordsStatistics().get(word)==null){
+                            score+=0;
+                        }
+                        else score+=wallaRobot.getWordsStatistics().get(word);
+                    }
+                    break;
+                case 3:
+                    YnetRobot ynetRobot=new YnetRobot();
+                    System.out.println(ynetRobot.getLongestArticleTitle());
+                    for (int i=0;i<5;i++) {
+                        String word=scanner.next();
+                        if(ynetRobot.getWordsStatistics().get(word)==null){
+                            score+=0;
+                        }
+                        else score+=ynetRobot.getWordsStatistics().get(word);
+                    }
+                    break;
 
-    }
-    System.out.println(score);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println(score);
 
 
     }
