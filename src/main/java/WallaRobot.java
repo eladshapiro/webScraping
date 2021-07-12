@@ -28,10 +28,12 @@ public class WallaRobot extends BaseRobot {
         for (Element smallTeasers : secondPart.getElementsByTag("a")) {
             sitesUrl.add(smallTeasers.attributes().get("href"));
         }
-        for (String url : sitesUrl) {
+        Element titleSection;
+        for (String url : sitesUrl)
+        {
             Article article = new Article("","","");
             site = Jsoup.connect(url).get();
-            Element titleSection;
+
             titleSection = site.getElementsByClass("item-main-content").get(0);
             article.setMainTitle(titleSection.getElementsByTag("h1").get(0).text());
             article.setSubTitle(titleSection.getElementsByTag("p").get(0).text());
