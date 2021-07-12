@@ -45,6 +45,7 @@ public class Main {
     int score=0;
         System.out.println("Hint: The title of the longest article is: "+site.getLongestArticleTitle());
         for (int i=0;i<5;i++) {
+            System.out.println("Enter a word that you think appears on the site");
             String word=scanner.next();
             if(site.getWordsStatistics().get(word)==null){
                 score+=0;
