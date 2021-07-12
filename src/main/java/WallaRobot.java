@@ -31,7 +31,8 @@ public class WallaRobot extends BaseRobot {
         for (String url : sitesUrl) {
             Article article = new Article("","","");
             site = Jsoup.connect(url).get();
-            Element titleSection = site.getElementsByClass("item-main-content").get(0);
+            Element titleSection;
+            titleSection = site.getElementsByClass("item-main-content").get(0);
             article.setMainTitle(titleSection.getElementsByTag("h1").get(0).text());
             article.setSubTitle(titleSection.getElementsByTag("p").get(0).text());
             for (Element subTitle : site.getElementsByClass("css-onxvt4")) {
