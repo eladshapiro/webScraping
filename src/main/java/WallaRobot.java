@@ -68,28 +68,17 @@ public class WallaRobot extends BaseRobot {
 
 
         @Override
-        public int countInArticlesTitles(String text) throws IOException
+        public int countInArticlesTitles(String text)
         {
-            Document wallaText = Jsoup.connect(getRootWebsiteUrl()).get();
-            String wallaTitle;
             int countHowMany = 0;
 
-            for (Element teasers : wallaText.getElementsByClass("with-roof "))
+            for (Article article : this.text)
             {
-                wallaTitle = teasers.getElementsByTag("h2").text();
-                if (wallaTitle.contains(text))
-
+                if (article.getMainTitle().contains(text))
                 {
                     countHowMany++;
                 }
-            }
-
-
-            Element secondPart = wallaText.getElementsByClass("css-1ugpt00 css-a9zu5q css-rrcue5 ").get(0);
-            for (Element secondTeasers : secondPart.getElementsByTag("a")) {
-                wallaTitle = secondTeasers.getElementsByTag("h3").text();
-
-                if (wallaTitle.contains(text))
+                if (article.getSubTitle().contains(text))
                 {
                     countHowMany++;
                 }
@@ -99,7 +88,7 @@ public class WallaRobot extends BaseRobot {
 
 
         @Override
-        public String getLongestArticleTitle ()throws IOException {
+        public String getLongestArticleTitle () {
         String longestArticleTitle=new String();
             for (int i=0;i<this.text.size()-1;i++){
                 if(text.get(i).getText().length()>text.get(i+1).getText().length()){

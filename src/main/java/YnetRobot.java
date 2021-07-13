@@ -71,44 +71,26 @@ public class YnetRobot extends BaseRobot
     }
 
     @Override
-    public int countInArticlesTitles(String text) throws IOException
+    public int countInArticlesTitles(String text)
     {
-        Document ynetText = Jsoup.connect(getRootWebsiteUrl()).get();
         int countHowMany = 0;
 
-        if (ynetText.getElementsByClass("slotTitle").get(0).text().contains(text))
+        for (Article article : this.text)
         {
-            countHowMany++;
-        }
-
-        if (ynetText.getElementsByClass("slotSubTitle").get(0).text().contains(text))
-        {
-            countHowMany++;
-        }
-
-        for (Element mainLayout : ynetText.getElementsByClass("layoutContainer"))
-        {
-            for (Element mediumTitle : mainLayout.getElementsByClass("slotTitle medium"))
+            if (article.getMainTitle().contains(text))
             {
-                if (mediumTitle.text().contains(text))
-                {
-                    countHowMany++;
-                }
+                countHowMany++;
             }
-            for (Element smallTitle : mainLayout.getElementsByClass("slotTitle small"))
+            if (article.getSubTitle().contains(text))
             {
-                if (smallTitle.text().contains(text))
-                {
-                    countHowMany++;
-                }
+                countHowMany++;
             }
         }
-
         return countHowMany;
     }
 
     @Override
-    public String getLongestArticleTitle() throws IOException
+    public String getLongestArticleTitle()
     {
         String longestArticleTitle=new String();
         for (int i=0;i<this.text.size()-1;i++){

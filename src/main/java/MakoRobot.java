@@ -80,19 +80,19 @@ public class MakoRobot extends BaseRobot
 }
 
     @Override
-    public int countInArticlesTitles(String text) throws IOException
+    public int countInArticlesTitles(String text)
     {
-        Document makoText = Jsoup.connect(getRootWebsiteUrl()).get();
         int countHowMany = 0;
 
-        for (Element element : makoText.getElementsByTag("span"))
+        for (Article article : this.text)
         {
-            for (Element makoTitle : element.getElementsByAttributeValue("data-type", "title"))
+            if (article.getMainTitle().contains(text))
             {
-                if (makoTitle.text().contains(text))
-                {
-                    countHowMany++;
-                }
+                countHowMany++;
+            }
+            if (article.getSubTitle().contains(text))
+            {
+                countHowMany++;
             }
         }
         return countHowMany;
@@ -101,7 +101,8 @@ public class MakoRobot extends BaseRobot
 
 
     @Override
-    public String getLongestArticleTitle() throws IOException {
+    public String getLongestArticleTitle()
+    {
         String longestArticleTitle=new String();
         for (int i=0;i<this.text.size()-1;i++){
             if(text.get(i).getText().length()>text.get(i+1).getText().length()){
