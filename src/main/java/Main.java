@@ -82,7 +82,7 @@ public class Main {
     public static int levelTwo(BaseRobot site) throws IOException
     {
         int howManyTimes,howManyTimesInSite,difference;
-        String text=getTextFromUser();
+        String text=getTextFromUser("");
         System.out.println("How many times you think it appears?");
         howManyTimes = scanner.nextInt();
         scanner.nextLine();
@@ -102,13 +102,16 @@ public class Main {
 
     }
 
-    public static String getTextFromUser()
+    public static String getTextFromUser(String text)
     {
-        System.out.println("Please enter a phrase that you think will appear in the titles in the site: ");
-        String text = scanner.next();
-        if (text.length()>20)
+        while (text.length()>20 || text.length()==0)
         {
-            getTextFromUser();
+            System.out.println("Please enter a phrase that you think will appear in the titles in the site: ");
+            text = scanner.nextLine();
+            if (text.length() == 0)
+            {
+                text = scanner.nextLine();
+            }
         }
         return text;
     }
