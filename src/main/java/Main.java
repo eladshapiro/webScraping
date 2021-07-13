@@ -14,34 +14,41 @@ public class Main {
     public static final int walla=2;
     public static final int ynet=3;
 
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args)
+    {
         Scanner scanner = new Scanner(System.in);
         int score = 0;
-        System.out.println("Which site would you like to crawl?-Eמter it's number:");
-        System.out.println("1.Mako");
-        System.out.println("2.Walla");
-        System.out.println("3.Ynet");
+        try {
+            System.out.println("Which site would you like to crawl? - Enter it's number:");
+            System.out.println("1.Mako");
+            System.out.println("2.Walla");
+            System.out.println("3.Ynet");
             int choice = scanner.nextInt();
             switch (choice) {
                 case mako:
                     MakoRobot makoRobot = new MakoRobot();
-                    levelOne(makoRobot);
+                    game(makoRobot);
                     break;
                 case walla:
                     WallaRobot wallaRobot = new WallaRobot();
-                   levelOne(wallaRobot);
+                    game(wallaRobot);
                     break;
                 case ynet:
                     YnetRobot ynetRobot = new YnetRobot();
-                    levelOne(ynetRobot);
+                    game(ynetRobot);
                     break;
-
-
             }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            System.out.println("You didn't enter a valid input");
+        }
     }
 
 
-    public static void levelOne(BaseRobot site){
+    public static int levelOne(BaseRobot site) throws IOException
+    {
     int score=0;
         String word;
         System.out.println("Hint: The title of the longest article is: "+site.getLongestArticleTitle());
@@ -65,6 +72,23 @@ public class Main {
                     score += site.getWordsStatistics().get(word);
             }
         }
-        System.out.println("\nyou'r score is:"+score);
+
+        return score;
     }
+
+
+
+    public static int levelTwo(BaseRobot site) throws IOException {
+        String text;
+        System.out.println("Please enter a phrase that you think will appear in the titles in the site: ");
+        text = scanner.next();
+       return site.countInArticlesTitles(text);
+    }
+
+    public static void game (BaseRobot site) throws IOException {
+        int score=levelOne(site)+levelTwo(site);
+        System.out.println("\nyou'r score is: "+score);
+
+    }
+
 }

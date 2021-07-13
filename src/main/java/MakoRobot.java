@@ -60,7 +60,7 @@ public class MakoRobot extends BaseRobot
     }
 
     @Override
-    public Map<String, Integer> getWordsStatistics() {
+    public Map<String, Integer> getWordsStatistics()throws IOException {
         for (Article article :this.text) {
             String text = article.getText() + " " + article.getMainTitle() + " " + article.getSubTitle();
 
@@ -80,12 +80,28 @@ public class MakoRobot extends BaseRobot
 }
 
     @Override
-    public int countInArticlesTitles(String text) {
-        return 0;
+    public int countInArticlesTitles(String text) throws IOException
+    {
+        Document makoText = Jsoup.connect(getRootWebsiteUrl()).get();
+        int countHowMany = 0;
+
+        for (Element element : makoText.getElementsByTag("span"))
+        {
+            for (Element makoTitle : element.getElementsByAttributeValue("data-type", "title"))
+            {
+                if (makoTitle.text().contains(text))
+                {
+                    countHowMany++;
+                }
+            }
+        }
+        return countHowMany;
     }
 
+
+
     @Override
-    public String getLongestArticleTitle() {
+    public String getLongestArticleTitle() throws IOException {
         String longestArticleTitle=new String();
         for (int i=0;i<this.text.size()-1;i++){
             if(text.get(i).getText().length()>text.get(i+1).getText().length()){

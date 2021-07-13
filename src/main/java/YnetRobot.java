@@ -23,11 +23,14 @@ public class YnetRobot extends BaseRobot
 
         sitesUrl.add(site.getElementsByClass("slotTitle").get(0).child(0).attributes().get("href"));
         Element teasers = site.getElementsByClass("YnetMultiStripComponenta oneRow multiRows").get(0);
-        for (Element mediaItems : teasers.getElementsByClass("mediaItems")) {
+        for (Element mediaItems : teasers.getElementsByClass("mediaItems"))
+        {
             sitesUrl.add(mediaItems.child(0).child(0).attributes().get("href"));
         }
+
         Element news = site.getElementsByClass("MultiArticleRowsManualComponenta").get(0);
-        for (Element mediaItems : news.getElementsByClass("mediaItems")) {
+        for (Element mediaItems : news.getElementsByClass("mediaItems"))
+        {
             sitesUrl.add(mediaItems.child(0).child(0).attributes().get("href"));
         }
         for (Element slotTitle_small : news.getElementsByClass("slotTitle small"))
@@ -35,7 +38,8 @@ public class YnetRobot extends BaseRobot
             sitesUrl.add(slotTitle_small.child(0).attributes().get("href"));
         }
 
-        for (String url : sitesUrl) {
+        for (String url : sitesUrl)
+        {
             site = Jsoup.connect(url).get();
             Article article = new Article(site.getElementsByClass("mainTitle").text(),
                     site.getElementsByClass("subTitle").text(),
@@ -47,7 +51,8 @@ public class YnetRobot extends BaseRobot
     }
 
     @Override
-    public Map<String, Integer> getWordsStatistics() {
+    public Map<String, Integer> getWordsStatistics() throws IOException
+    {
         for (Article article : this.text) {
             String text = article.getText() + " " + article.getMainTitle() + " " + article.getSubTitle();
 
@@ -66,12 +71,45 @@ public class YnetRobot extends BaseRobot
     }
 
     @Override
-    public int countInArticlesTitles(String text) {
-        return 0;
+    public int countInArticlesTitles(String text) throws IOException
+    {
+        Document ynetText = Jsoup.connect(getRootWebsiteUrl()).get();
+        int countHowMany = 0;
+
+        if (ynetText.getElementsByClass("slotTitle").get(0).text().contains(text))
+        {
+            countHowMany++;
+        }
+
+        if (ynetText.getElementsByClass("slotSubTitle").get(0).text().contains(text))
+        {
+            countHowMany++;
+        }
+
+        for (Element mainLayout : ynetText.getElementsByClass("layoutContainer"))
+        {
+            for (Element mediumTitle : mainLayout.getElementsByClass("slotTitle medium"))
+            {
+                if (mediumTitle.text().contains(text))
+                {
+                    countHowMany++;
+                }
+            }
+            for (Element smallTitle : mainLayout.getElementsByClass("slotTitle small"))
+            {
+                if (smallTitle.text().contains(text))
+                {
+                    countHowMany++;
+                }
+            }
+        }
+
+        return countHowMany;
     }
 
     @Override
-    public String getLongestArticleTitle() {
+    public String getLongestArticleTitle() throws IOException
+    {
         String longestArticleTitle=new String();
         for (int i=0;i<this.text.size()-1;i++){
             if(text.get(i).getText().length()>text.get(i+1).getText().length()){
@@ -81,5 +119,6 @@ public class YnetRobot extends BaseRobot
         }
         return longestArticleTitle;
     }
-    }
+
+}
 

@@ -20,6 +20,7 @@ public class WallaRobot extends BaseRobot {
         this.sitesUrl = new ArrayList<>();
         this.map = new HashMap<>();
         this.text=new ArrayList<>();
+
         for (Element teasers : site.getElementsByClass("with-roof ")) {
             sitesUrl.add(teasers.child(0).attributes().get("href"));
         }
@@ -46,7 +47,7 @@ public class WallaRobot extends BaseRobot {
 
 
     @Override
-    public Map<String, Integer> getWordsStatistics() {
+    public Map<String, Integer> getWordsStatistics()throws IOException {
         for (Article article :this.text) {
             String text = article.getText() + " " + article.getMainTitle() + " " + article.getSubTitle();
 
@@ -67,12 +68,38 @@ public class WallaRobot extends BaseRobot {
 
 
         @Override
-        public int countInArticlesTitles (String text){
-            return 0;
+        public int countInArticlesTitles(String text) throws IOException
+        {
+            Document wallaText = Jsoup.connect(getRootWebsiteUrl()).get();
+            String wallaTitle;
+            int countHowMany = 0;
+
+            for (Element teasers : wallaText.getElementsByClass("with-roof "))
+            {
+                wallaTitle = teasers.getElementsByTag("h2").text();
+                if (wallaTitle.contains(text))
+
+                {
+                    countHowMany++;
+                }
+            }
+
+
+            Element secondPart = wallaText.getElementsByClass("css-1ugpt00 css-a9zu5q css-rrcue5 ").get(0);
+            for (Element secondTeasers : secondPart.getElementsByTag("a")) {
+                wallaTitle = secondTeasers.getElementsByTag("h3").text();
+
+                if (wallaTitle.contains(text))
+                {
+                    countHowMany++;
+                }
+            }
+            return countHowMany;
         }
 
+
         @Override
-        public String getLongestArticleTitle () {
+        public String getLongestArticleTitle ()throws IOException {
         String longestArticleTitle=new String();
             for (int i=0;i<this.text.size()-1;i++){
                 if(text.get(i).getText().length()>text.get(i+1).getText().length()){
