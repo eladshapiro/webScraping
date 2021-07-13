@@ -31,10 +31,10 @@ public class WallaRobot extends BaseRobot {
             {
                 Article article = new Article("","","");
                 site = Jsoup.connect(url).get();
-                try {
+                try {                                                        // walla was a strange thing that gives you another website, so that prevents it
                     titleSection = site.getElementsByClass("item-main-content").get(0);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                  //  e.printStackTrace();
                 }
                 article.setMainTitle(titleSection.getElementsByTag("h1").get(0).text());
                 article.setSubTitle(titleSection.getElementsByTag("p").get(0).text());
