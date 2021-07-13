@@ -28,7 +28,7 @@ public class YnetRobot extends BaseRobot
             sitesUrl.add(mediaItems.child(0).child(0).attributes().get("href"));
         }
 
-        Element news = site.getElementsByClass("MultiArticleRowsManualComponenta").get(0);
+        Element news = site.getElementsByClass("MultiArticleRowsComponenta").get(0);
         for (Element mediaItems : news.getElementsByClass("mediaItems"))
         {
             sitesUrl.add(mediaItems.child(0).child(0).attributes().get("href"));

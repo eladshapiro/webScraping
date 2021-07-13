@@ -41,7 +41,6 @@ public class Main {
         }
         catch (Exception e)
         {
-            e.printStackTrace();
             System.out.println("You didn't enter a valid input");
         }
     }
@@ -89,7 +88,7 @@ public class Main {
         howManyTimesInSite=site.countInArticlesTitles(text);
         difference=howManyTimes-howManyTimesInSite;
         difference=Math.abs(difference);
-        if (difference<=2)
+        if (difference<=2 && howManyTimesInSite!=0)
         {
             return 250;
         }
