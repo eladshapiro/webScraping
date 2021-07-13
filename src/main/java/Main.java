@@ -80,8 +80,8 @@ public class Main {
     public static int levelTwo(BaseRobot site) throws IOException {
         String text;
         int howManyTimes,howManyTimesInSite,difference;
-        System.out.println("Please enter a phrase that you think will appear in the titles in the site: ");
-        text = scanner.next();
+        System.out.println("Please enter a phrase that you think will appear in the titles in the site: (1-20 words) ");
+        text = scanner.nextLine();
         System.out.println("How many times you think it appears?");
         howManyTimes = scanner.nextInt();
         scanner.nextLine();
