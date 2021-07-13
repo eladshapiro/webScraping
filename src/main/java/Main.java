@@ -79,12 +79,10 @@ public class Main {
 
 
 
-    public static int levelTwo(BaseRobot site) throws IOException {
-        String text;
+    public static int levelTwo(BaseRobot site) throws IOException
+    {
         int howManyTimes,howManyTimesInSite,difference;
-        System.out.println("Please enter a phrase that you think will appear in the titles in the site: ");
-        text = scanner.nextLine();
-        scanner.nextLine();
+        String text=getTextFromUser();
         System.out.println("How many times you think it appears?");
         howManyTimes = scanner.nextInt();
         scanner.nextLine();
@@ -102,6 +100,17 @@ public class Main {
         int score=levelOne(site)+levelTwo(site);
         System.out.println("\nyou'r score is: "+score);
 
+    }
+
+    public static String getTextFromUser()
+    {
+        System.out.println("Please enter a phrase that you think will appear in the titles in the site: ");
+        String text = scanner.next();
+        if (text.length()>20)
+        {
+            getTextFromUser();
+        }
+        return text;
     }
 
 }
