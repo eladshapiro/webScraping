@@ -25,7 +25,7 @@ public class WallaRobot extends BaseRobot {
             sitesUrl.add(teasers.child(0).attributes().get("href"));
         }
 
-        Element secondPart = site.getElementsByClass("css-1ugpt00 css-a9zu5q css-rrcue5 ").get(0);
+        Element secondPart = site.getElementsByClass("css-1ugpt00 css-a9zu5q css-rrcue5").get(0);
         for (Element smallTeasers : secondPart.getElementsByTag("a")) {
             sitesUrl.add(smallTeasers.attributes().get("href"));
         }

@@ -24,6 +24,7 @@ public class Main {
             System.out.println("2.Walla");
             System.out.println("3.Ynet");
             int choice = scanner.nextInt();
+            scanner.nextLine();
             switch (choice) {
                 case mako:
                     MakoRobot makoRobot = new MakoRobot();
@@ -80,7 +81,7 @@ public class Main {
     public static int levelTwo(BaseRobot site) throws IOException {
         String text;
         int howManyTimes,howManyTimesInSite,difference;
-        System.out.println("Please enter a phrase that you think will appear in the titles in the site: (1-20 words) ");
+        System.out.println("Please enter a phrase that you think will appear in the titles in the site: ");
         text = scanner.nextLine();
         scanner.nextLine();
         System.out.println("How many times you think it appears?");
