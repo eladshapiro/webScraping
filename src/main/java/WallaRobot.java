@@ -21,28 +21,26 @@ public class WallaRobot extends BaseRobot {
         this.map = new HashMap<>();
         this.text=new ArrayList<>();
 
-        for (Element teasers : site.getElementsByClass("with-roof ")) {
-            sitesUrl.add(teasers.child(0).attributes().get("href"));
+        sitesUrl.add(site.getElementsByClass("with-roof").get(0).child(0).attr("href"));
+        Elements elements=site.getElementsByClass("main-taste").get(0).getElementsByTag("a");
+        for (Element element : elements) {
+            sitesUrl.add(element.attr("href"));
         }
-
-        Element secondPart = site.getElementsByClass("css-1ugpt00 css-a9zu5q css-rrcue5").get(0);
-        for (Element smallTeasers : secondPart.getElementsByTag("a")) {
-            sitesUrl.add(smallTeasers.attributes().get("href"));
-        }
-        Element titleSection;
-        for (String url : sitesUrl)
-        {
-            Article article = new Article("","","");
-            site = Jsoup.connect(url).get();
-
-            titleSection = site.getElementsByClass("item-main-content").get(0);
-            article.setMainTitle(titleSection.getElementsByTag("h1").get(0).text());
-            article.setSubTitle(titleSection.getElementsByTag("p").get(0).text());
-            for (Element subTitle : site.getElementsByClass("css-onxvt4")) {
-                article.setText(article.getText() + " " + subTitle.text());
+        Element titleSection = null;
+            for (String url : sitesUrl)
+            {
+                Article article = new Article("","","");
+                site = Jsoup.connect(url).get();
+                try {
+                    titleSection = site.getElementsByClass("item-main-content").get(0);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                article.setMainTitle(titleSection.getElementsByTag("h1").get(0).text());
+                article.setSubTitle(titleSection.getElementsByTag("p").get(0).text());
+                article.setText(site.getElementsByClass("css-onxvt4").text());
+                text.add(article);
             }
-            text.add(article);
-        }
     }
 
 

@@ -42,6 +42,7 @@ public class Main {
         }
         catch (Exception e)
         {
+            System.out.println(e);
             System.out.println("You didn't enter a valid input");
         }
     }
