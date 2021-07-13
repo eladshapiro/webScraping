@@ -80,9 +80,20 @@ public class Main {
 
     public static int levelTwo(BaseRobot site) throws IOException {
         String text;
+        int howManyTimes,howManyTimesInSite,difference;
         System.out.println("Please enter a phrase that you think will appear in the titles in the site: ");
         text = scanner.next();
-       return site.countInArticlesTitles(text);
+        System.out.println("How many times you think it appears?");
+        howManyTimes = scanner.nextInt();
+        scanner.nextLine();
+        howManyTimesInSite=site.countInArticlesTitles(text);
+        difference=howManyTimes-howManyTimesInSite;
+        difference=Math.abs(difference);
+        if (difference<=2)
+        {
+            return 250;
+        }
+        return 0;
     }
 
     public static void game (BaseRobot site) throws IOException {
